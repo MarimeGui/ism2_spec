@@ -1,0 +1,1412 @@
+<html>
+    <header>
+        <title>ISM2 Reverse-Engineered File Specification</title>
+        <style>
+            table, th, td {
+                border: 1px solid black;
+            }
+        </style>
+    </header>
+    <body>
+        <h1>ISM2 Reverse-Engineered File Specification</h1>
+        Accessory 110 is interesting...<br>
+        Files are in Little endian<br>
+        All offsets found in the file are relative to the beggining of the file<br>
+        Every number with a "0x" prefix is represented in hexadecimal, otherwise in decimal<br>
+        
+        <h2>Header</h2>
+        Contains general information about the file
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>Magic Number</td>
+                <td>"ISM2" in ASCII</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4 (2*2)?</td>
+                <td>u32 (2*u16)?</td>
+                <td>Version ? (0x0101 or 0x0100)</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>8</td>
+                <td colspan=2>Padding (0x00)</td>
+            </tr>
+            <tr>
+                <td>0x10</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Entire File Size</td>
+            </tr>
+            <tr>
+                <td>0x14</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Number of sections</td>
+            </tr>
+            <tr>
+                <td>0x18</td>
+                <td>8</td>
+                <td colspan=2>Padding (0x00)</td>
+            </tr>
+            <tr>
+                <td>0x20</td>
+                <td>Variable</td>
+                <td colspan=2>
+                Offsets to sections in the file in the order they are layed out<br>
+                    Multiple entries<br>
+                    <table>
+                        <tr>
+                            <th>Offset</th>
+                            <th>Length</th>
+                            <th>Type</th>
+                            <th>Descritpion</th>
+                        </tr>
+                        <tr>
+                            <td>0x00</td>
+                            <td>4</td>
+                            <td>u32</td>
+                            <td>Section Magic Number</td>
+                        </tr>
+                        <tr>
+                            <td>0x04</td>
+                            <td>4</td>
+                            <td>u32</td>
+                            <td>Offset to section</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        Sections seems to follow this order:
+        <ol>
+            <li><a href="#21">0x21 - Strings Index Table</a></li>
+            <li>0x2E</li>
+            <li>0x61</li>
+            <li>0x62</li>
+            <li><a href="#03">0x03 - Joint Definition</a></li>
+            <li><a href="#32">0x32 - Joint Extra Information</a></li>
+            <li><a href="#0B">0x0B - 3D Data Buffers</a></li>
+        </ol>
+        
+        <h2 id="21">0x21 - Strings Index Table</h2>
+        Contains strings of text used throughout the file.<br>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic number (0x21)</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x0C</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Number of entries</td>
+            </tr>
+            <tr>
+                <td>0xC</td>
+                <td>Variable</td>
+                <td colspan=2>
+                    Offsets to every string entry in the following buffer<br>
+                    Multiple entries<br>
+                    <table>
+                        <tr>
+                            <th>Offset</th>
+                            <th>Length</th>
+                            <th>Type</th>
+                            <th>Descritpion</th>
+                        </tr>
+                        <tr>
+                            <td>0x00</td>
+                            <td>4</td>
+                            <td>u32</td>
+                            <td>Offset to entry</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>...</td>
+                <td>Variable</td>
+                <td colspan=2>
+                    Text buffer<br>
+                    Multiple entries<br>
+                    <table>
+                        <tr>
+                            <th>Offset</th>
+                            <th>Length</th>
+                            <th>Type</th>
+                            <th>Descritpion</th>
+                        </tr>
+                        <tr>
+                            <td>0x00</td>
+                            <td>Variable</td>
+                            <td colspan=2>String of text</td>
+                        </tr>
+                        <tr>
+                            <td>...</td>
+                            <td>1</td>
+                            <td>u8</td>
+                            <td>ASCII NUL Separator (0x00)</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        
+        <h2 id="03">0x03 - Joint Definition</h2>
+        Describes Joints<br>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic number (0x03)</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x14</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Number of sub-sections</td>
+            </tr>
+            <tr>
+                <td>0x0C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Index of "VisualSceneNode" in the String Table</td>
+            </tr>
+            <tr>
+                <td>0x10</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x21 | 0xA4 | 0xA6 (seems like +1 of previous field)</td>
+            </tr>
+            <tr>
+                <td>0x14</td>
+                <td>Variable</td>
+                <td colspan=2>
+                    Offsets to sub-sections<br>
+                    Multiple entries<br>
+                    <table>
+                        <tr>
+                            <th>Offset</th>
+                            <th>Length</th>
+                            <th>Type</th>
+                            <th>Descritpion</th>
+                        </tr>
+                        <tr>
+                            <td>0x00</td>
+                            <td>4</td>
+                            <td>u32</td>
+                            <td>Offset to sub-section</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        
+        <h3>0x04</h3>
+        Seems to only appear once at the beginning<br>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic number (0x04)</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x40</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x02</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x22</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x22</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x01</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x01</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0xFFFFFFFF</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x818 - Offset to sub-section</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x878 - Offset to sub-section</td>
+            </tr>
+        </table>
+        
+        <h4>0x4D</h4>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic number (0x4D)</td>
+            </tr>
+        </table>
+        
+        <h4>0x5B</h4>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic Number (0x5B)</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x0C</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x03</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x830 - Offset to sub-section</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x848 - Offset to sub-section</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x860 - Offset to sub-section</td>
+            </tr>
+        </table>
+        
+        <h4>0x5D</h4>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic number (0x5D)</td>
+            </tr>
+        </table>
+        
+        <h4>0x5E</h4>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic number (0x5E)</td>
+            </tr>
+        </table>
+        
+        <h4>0x5F</h4>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic number (0x5F)</td>
+            </tr>
+        </table>
+        
+        <h3 id="05">0x05</h3>
+        There is one of these sections per joint<br>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic number (0x05)</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x40</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Number of sub-sections</td>
+            </tr>
+            <tr>
+                <td>0x0C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>String table index</td>
+            </tr>
+            <tr>
+                <td>0x10</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>String table index again</td>
+            </tr>
+            <tr>
+                <td>0x14</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x35 | 0x33 | 0x39 | ...</td>
+            </tr>
+            <tr>
+                <td>0x18</td>
+                <td>4</td>
+                <td colspan=2>0x00</td>
+            </tr>
+            <tr>
+                <td>0x1C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Offset to parent joint (0x00 if root)</td>
+            </tr>
+            <tr>
+                <td>0x20</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x0C | 0x04 | 0x01 | 0x00</td>
+            </tr>
+            <tr>
+                <td>0x24</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x01</td>
+            </tr>
+            <tr>
+                <td>0x28</td>
+                <td>4</td>
+                <td colspan=2>0x00</td>
+            </tr>
+            <tr>
+                <td>0x2C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00 (root) | 0x06 | 0x04 | 0x10</td>
+            </tr>
+            <tr>
+                <td>0x30</td>
+                <td>4</td>
+                <td colspan=2>0x00</td>
+            </tr>
+            <tr>
+                <td>0x34</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x01 (root) | 0x07 | 0x05 | 0x11 (0x2C data +1)</td>
+            </tr>
+            <tr>
+                <td>0x38</td>
+                <td>8</td>
+                <td colspan=2>0x00</td>
+            </tr>
+            <tr>
+                <td>0x40</td>
+                <td>Variable</td>
+                <td>u32</td>
+                <td>Offsets to sub-sections</td>
+            </tr>
+        </table>
+        
+        <h3 id="5C">0x5C</h3>
+        Appears in characters but not in monsters<br>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic number (0x5C)</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x0C</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Number of offsets in folowing entry</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>Variable</td>
+                <td>u32</td>
+                <td>Offsets to next <a href="#05">0x05</a> sub-section</td>
+            </tr>
+        </table>
+        
+        <h3 id="5B">0x5B</h3>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic number (0x5B)</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x0C</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Number of offsets</td>
+            </tr>
+            <tr>
+                <td>0x0C</td>
+                <td>Variable</td>
+                <td colspan=2>
+                    Multiple entries
+                    <table>
+                        <tr>
+                            <th>Offset</th>
+                            <th>Length</th>
+                            <th>Type</th>
+                            <th>Descritpion</th>
+                        </tr>
+                        <tr>
+                            <td>0x00</td>
+                            <td>4</td>
+                            <td>u32</td>
+                            <td>Offset to 0x14 sub-section</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        
+        <h3 id="14">0x14</h3>
+        Describes the Transform of the joint relative to its parent, but the result is weird
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic number (0x14)</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0xC2 | 0xC1 | 0xB4 | 0xBC | 0x4B | 0xAD</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>4</td>
+                <td>f32</td>
+                <td>X Transform</td>
+            </tr>
+            <tr>
+                <td>0x0C</td>
+                <td>4</td>
+                <td>f32</td>
+                <td>Y Transform</td>
+            </tr>
+            <tr>
+                <td>0x10</td>
+                <td>4</td>
+                <td>f32</td>
+                <td>Z Transform</td>
+            </tr>
+        </table>
+        
+        <h3 id="70">0x70</h3>
+        
+        <h2 id="32">0x32 - Joint Extra Information</h2>
+        This section is only present in character files, and seems to only contain IDs to the String Table and Inverse Bind Matrices for each joint.<br>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic number (0x32)</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x14</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x01</td>
+            </tr>
+            <tr>
+                <td>0x0C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Offset to next sub-section</td>
+            </tr>
+        </table>
+        
+        <h3 id="31">0x31</h3>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic Number</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x14</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x01</td>
+            </tr>
+            <tr>
+                <td>0x0C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x30 | 0x31 | 0x32</td>
+            </tr>
+            <tr>
+                <td>0x10</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x31 | 0x32 | 0x33 (seems to always be +1 of the previous field)</td>
+            </tr>
+            <tr>
+                <td>0x14</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Offset to next sub-section</td>
+            </tr>
+        </table>
+        
+        <h3 id="30">0x30</h3>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic number</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x54</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x02</td>
+            </tr>
+            <tr>
+                <td>0x0C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x1B | 0x1C</td>
+            </tr>
+            <tr>
+                <td>0x10</td>
+                <td>68, 70, ...</td>
+                <td colspan=2>
+                    Some kind of data<br>
+                    0x803F appears a lot but is not aligned on 4 bytes<br>
+                    (0x3F800000 is 1 in f32, 0x3F80 is 1.875 in f16)
+                </td>
+            </tr>
+            <tr>
+                <td>After data</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Offset to next sub-section</td>
+            </tr>
+            <tr>
+                <td>After data +4</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Offset to other next sub-section</td>
+            </tr>
+        </table>
+        
+        <h3 id="44">0x44 - Buffer</h3>
+        This sub-section appears multiple times...<br>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic number (0x44)</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x20</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>
+                    Number of entries<br>
+                    (note that, for some reason, the Inverse Bind Matrix buffer has this set to a number 16 times bigger than the actual amount)
+                </td>
+            </tr>
+            <tr>
+                <td>0x0C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x10</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x05 | 0x0C</td>
+            </tr>
+            <tr>
+                <td>0x14</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x01 | 0x10</td>
+            </tr>
+            <tr>
+                <td>0x18</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00 | 0x10</td>
+            </tr>
+            <tr>
+                <td>0x1C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x20</td>
+                <td>Variable</td>
+                <td colspan=2>Buffer data</td>
+            </tr>
+        </table>
+        
+        The buffers content seems to follow this order:<br>
+        <ol>
+            <li>Indexes to String table for naming each bone (stride of 2 bytes)</li>
+            <li>Inverse bind matrices (stride of 64 bytes)</li>
+        </ol>
+        
+        <h2 id="0B">0x0B - 3D Data Buffers</h2>
+        Contains the general information on how the model looks like in 3D space.<br>
+        Contains multiple sub-sections<br>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic Number (0x0B)</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x0C</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x01</td>
+            </tr>
+            <tr>
+                <td>0x0C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Offset to <a href="#0A">0x0A</a> sub-section</td>
+            </tr>
+        </table>
+        
+        <h3 id="0A">0x0A</h3>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic Number (0x0A)</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x20</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Number of sub-sections</td>
+            </tr>
+            <tr>
+                <td>0x0C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x0D | 0x1B | 0x1C (index to string table ???)</td>
+            </tr>
+            <tr>
+                <td>0x10</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Same as previous</td>
+            </tr>
+            <tr>
+                <td>0x14</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x18</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x02</td>
+            </tr>
+            <tr>
+                <td>0x1C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x01 | 0x03</td>
+            </tr>
+            <tr>
+                <td>0x20</td>
+                <td>Variable</td>
+                <td colspan=2>
+                    Multiple entries<br>
+                    <table>
+                        <tr>
+                            <th>Offset</th>
+                            <th>Length</th>
+                            <th>Type</th>
+                            <th>Descritpion</th>
+                        </tr>
+                        <tr>
+                            <td>0x00</td>
+                            <td>4</td>
+                            <td>u32</td>
+                            <td>Offset to sub-sections <a href="#59">0x59</a>, <a href="#46">0x46</a>, <a href="#6E">0x6E</a></td>
+                        </tr>
+                    </table>
+                    They are always listed in the structure above in the order they appear in the file.<br>
+                    Each sub-section start might or might not be aligned<br>
+                </td>
+            </tr>
+        </table>
+        
+        <h3 id="59">0x59 - Vertices</h3>
+        Contains information about each vertex in order in the file.<br>
+        Accessories have a single section, while characters can have multiple...<br>
+        (probably for specifiying the index of the joint the vertex is connected to)<br>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic Number</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x1C</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Number of sub-sections</td>
+            </tr>
+            <tr>
+                <td>0x0C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x01 | 0x03</td>
+            </tr>
+            <tr>
+                <td>0x10</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Amount of vertices</td>
+            </tr>
+            <tr>
+                <td>0x14</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Buffer Stride ? (Always 0x20)</td>
+            </tr>
+            <tr>
+                <td>0x18</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x20</td>
+                <td>Variable</td>
+                <td colspan=2>
+                    Offsets to sub-sections<br>
+                    Multiple entries<br>
+                    <table>
+                        <tr>
+                            <th>Offset</th>
+                            <th>Length</th>
+                            <th>Type</th>
+                            <th>Descritpion</th>
+                        </tr>
+                        <tr>
+                            <td>0x00</td>
+                            <td>4</td>
+                            <td>u32</td>
+                            <td>Offset to sub-sections 0x00, 0x02, 0x0E, <a href="#03O">0x03</a></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        
+        <h4 id="03O">0x03 - Data</h4>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic Number (0x03)</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x04</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x03</td>
+            </tr>
+            <tr>
+                <td>0x0C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x20</td>
+            </tr>
+            <tr>
+                <td>0x10</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x1C</td>
+            </tr>
+            <tr>
+                <td>0x14</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Offset to buffer</td>
+            </tr>
+            <tr>
+                <td colspan=4>Padding to align on 16 bytes</td>
+            </tr>
+            <tr>
+                <td>...</td>
+                <td>Variable</td>
+                <td colspan=2>
+                    Buffer containing vertices data<br>
+                </td>
+            </tr>
+        </table>
+        
+        It seems like the following layout is always used in all model files (buffer stride of 0x20):<br>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>f32</td>
+                <td>Position X Coordinate</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4</td>
+                <td>f32</td>
+                <td>Position Y Coordinate</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>4</td>
+                <td>f32</td>
+                <td>Position Z Coordinate</td>
+            </tr>
+            <tr>
+                <td>0x0C</td>
+                <td>2</td>
+                <td>f16</td>
+                <td>Unknown, always approximately between -1 and 1</td>
+            </tr>
+            <tr>
+                <td>0x0E</td>
+                <td>2</td>
+                <td>f16</td>
+                <td>Unknown, always approximately between -1 and 1</td>
+            </tr>
+            <tr>
+                <td>0x10</td>
+                <td>2</td>
+                <td>f16</td>
+                <td>Unknown, always approximately between -1 and 1</td>
+            </tr>
+            <tr>
+                <td>0x12</td>
+                <td>2</td>
+                <td>f16</td>
+                <td>Texture U Cooridnate</td>
+            </tr>
+            <tr>
+                <td>0x14</td>
+                <td>2</td>
+                <td>f16</td>
+                <td>Unknown, always between -1 and 1</td>
+            </tr>
+            <tr>
+                <td>0x16</td>
+                <td>2</td>
+                <td>f16</td>
+                <td>Unknown, always approximately between -1 and 1</td>
+            </tr>
+            <tr>
+                <td>0x18</td>
+                <td>2</td>
+                <td>f16</td>
+                <td>Unknown, always between -1 and 1</td>
+            </tr>
+            <tr>
+                <td>0x1A</td>
+                <td>2</td>
+                <td>f16</td>
+                <td>Texture V Coordinate</td>
+            </tr>
+            <tr>
+                <td>0x1C</td>
+                <td>2</td>
+                <td>u16</td>
+                <td>Always 0xFF (padding ?)</td>
+            </tr>
+            <tr>
+                <td>0x1E</td>
+                <td>2</td>
+                <td>u16</td>
+                <td>Always 0xFF (padding ?)</td>
+            </tr>
+        </table>
+        
+        <h3 id="46">0x46 - Faces</h3>
+        Contains each points of the faces defining the shape of the model.<br>
+        It seems to always be triangles.<br>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic Number (0x46)</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x1C</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Amount of sub-sections</td>
+            </tr>
+            <tr>
+                <td>0x0C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Points to names like 'blinn2SG', '_blinn3SG', ...</td>
+            </tr>
+            <tr>
+                <td>0x10</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x10</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x04</td>
+            </tr>
+            <tr>
+                <td>0x18</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Number of faces</td>
+            </tr>
+            <tr>
+                <td>0x1C</td>
+                <td>Variable</td>
+                <td colspan=2>
+                    Offsets to sub-sections<br>
+                    Multiple Entries
+                    <table>
+                        <tr>
+                            <th>Offset</th>
+                            <th>Length</th>
+                            <th>Type</th>
+                            <th>Descritpion</th>
+                        </tr>
+                        <tr>
+                            <td>0x00</td>
+                            <td>4</td>
+                            <td>u32</td>
+                            <td>Offset to sub-section <a href="#45">0x45</a>, <a href="#6E">0x6E</a></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+            
+        <h4 id="45">0x45</h3>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Descritpion</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic Number (0x45)</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x14</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Amount of IDs in total in the buffer (should be Amount of faces * 3)</td>
+            </tr>
+            <tr>
+                <td>0x0C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x05</td>
+            </tr>
+            <tr>
+                <td>0x10</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x14</td>
+                <td>Variable</td>
+                <td colspan=2>
+                    Face definitions<br>
+                    Multiple entries<br>
+                    <table>
+                        <tr>
+                            <th>Offset</th>
+                            <th>Length</th>
+                            <th>Type</th>
+                            <th>Descritpion</th>
+                        </tr>
+                        <tr>
+                            <td>0x00</td>
+                            <td>2</td>
+                            <td>u16</td>
+                            <td>Vertex 1 ID</td>
+                        </tr>
+                        <tr>
+                            <td>0x02</td>
+                            <td>2</td>
+                            <td>u16</td>
+                            <td>Vertex 2 ID</td>
+                        </tr>
+                        <tr>
+                            <td>0x04</td>
+                            <td>2</td>
+                            <td>u16</td>
+                            <td>Vertex 3 ID</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        
+        <h3 id="6E">0x6E - Checksums ?</h3>
+        These sub-sections appears after some other sub-sections and contain some unknown binary data...<br>
+    </body>
+</html>
