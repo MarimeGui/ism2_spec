@@ -95,8 +95,10 @@
         <li>
             <a href="#21">0x21 - Strings Index Table</a>
         </li>
-        <li>0x2E</li>
-        <li>0x61</li>
+        <li>
+            <a href="#2E">0x2E</a>
+        </li>
+        <li><a href="#61">0x61</a></li>
         <li>0x62</li>
         <li>
             <a href="#03">0x03 - Joint Definition</a>
@@ -190,6 +192,146 @@
         </tr>
     </table>
 
+    <h2 id="2E">0x2E - Model Texture Names</h2>
+    <table>
+        <tr>
+            <th>Offset</th>
+            <th>Length</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>0x00</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Magic number (0x2E)</td>
+        </tr>
+        <tr>
+            <td>0x04</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x0C</td>
+        </tr>
+        <tr>
+            <td>0x08</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Number of sub-sections</td>
+        </tr>
+        <tr>
+            <td>0x0C</td>
+            <td>Variable</td>
+            <td colspan="2">
+                Offsets to sub-sections<br>
+                Multiple Entries
+                <table>
+                    <tr>
+                        <th>Offset</th>
+                        <th>Length</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>0x00</td>
+                        <td>4</td>
+                        <td>u32</td>
+                        <td>Offset to <a href="#2D">0x2D</a> sub-section</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <h3 id="2D">0x2D - Model texture name</h3>
+    <table>
+        <tr>
+            <th>Offset</th>
+            <th>Length</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>0x00</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Magic number (0x2D)</td>
+        </tr>
+        <tr>
+            <td>0x04</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Base Name</td>
+        </tr>
+        <tr>
+            <td>0x08</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Base name again</td>
+        </tr>
+        <tr>
+            <td>0x0C</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Original file location</td>
+        </tr>
+        <tr>
+            <td>0x10</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Original file name</td>
+        </tr>
+    </table>
+
+    <h2 id="61">0x61</h2>
+    <table>
+        <tr>
+            <th>Offset</th>
+            <th>Length</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>0x00</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Magic number (0x61)</td>
+        </tr>
+        <tr>
+            <td>0x04</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x0C</td>
+        </tr>
+        <tr>
+            <td>0x08</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Amount of sub-sections</td>
+        </tr>
+        <tr>
+            <td>0x0C</td>
+            <td>Variable</td>
+            <td colspan="2">
+                Offsets to sub-sections<br>
+                Multiple entries
+                <table>
+                    <tr>
+                        <th>Offset</th>
+                        <th>Length</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>0x00</td>
+                        <td>4</td>
+                        <td>u32</td>
+                        <td>Offset to sub-section</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
     <h2 id="03">0x03 - Joint Definition</h2>
     Describes Joints
     <br>
@@ -248,7 +390,10 @@
                         <td>0x00</td>
                         <td>4</td>
                         <td>u32</td>
-                        <td>Offset to sub-sections <a href="#04">0x04</a>, <a href="#05">0x05</a></td>
+                        <td>Offset to sub-sections
+                            <a href="#04">0x04</a>,
+                            <a href="#05">0x05</a>
+                        </td>
                     </tr>
                 </table>
             </td>
