@@ -829,7 +829,8 @@
         <tr>
             <td>0x18</td>
             <td>4</td>
-            <td colspan=2>0x00</td>
+            <td>u32</td>
+            <td>0x00</td>
         </tr>
         <tr>
             <td>0x1C</td>
@@ -852,7 +853,8 @@
         <tr>
             <td>0x28</td>
             <td>4</td>
-            <td colspan=2>0x00</td>
+            <td>u32</td>
+            <td>0x00</td>
         </tr>
         <tr>
             <td>0x2C</td>
@@ -863,7 +865,8 @@
         <tr>
             <td>0x30</td>
             <td>4</td>
-            <td colspan=2>0x00</td>
+            <td>u32</td>
+            <td>0x00</td>
         </tr>
         <tr>
             <td>0x34</td>
@@ -874,17 +877,37 @@
         <tr>
             <td>0x38</td>
             <td>8</td>
-            <td colspan=2>0x00</td>
+            <td>u64</td>
+            <td>0x00</td>
         </tr>
         <tr>
             <td>0x40</td>
             <td>Variable</td>
-            <td>u32</td>
-            <td>Offsets to sub-sections</td>
+            <td colspan="2">
+                Offsets to sub-sections
+                <br>Multiple entries
+                <table>
+                    <tr>
+                        <th>Offset</th>
+                        <th>Length</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>0x00</td>
+                        <td>4</td>
+                        <td>u32</td>
+                        <td>Offset to sub-section
+                            <a href="#5BO">0x5B</a>,
+                            <a href="#5C">0x5C</a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
         </tr>
     </table>
 
-    <h3 id="5C">0x5C</h3>
+    <h4 id="5C">0x5C</h4>
     Appears in characters but not in monsters, children maybe ?
     <br>
     <table>
@@ -921,7 +944,7 @@
         </tr>
     </table>
 
-    <h3 id="5B">0x5B - Offsets to attributes</h3>
+    <h4 id="5BO">0x5B - Offsets to attributes</h4>
     <table>
         <tr>
             <th>Offset</th>
@@ -963,14 +986,18 @@
                         <td>0x00</td>
                         <td>4</td>
                         <td>u32</td>
-                        <td>Offset to 0x14 sub-section</td>
+                        <td>Offset to attribute (
+                            <a href="#14">0x14</a>,
+                            <a href="#67">0x67</a>,
+                            <a href="#68">0x68</a>,
+                            <a href="#69">0x69</a>)</td>
                     </tr>
                 </table>
             </td>
         </tr>
     </table>
 
-    <h3 id="14">0x14 - Transform</h3>
+    <h5 id="14">0x14 - Transform</h5>
     Describes the Transform of the joint relative to its parent
     <table>
         <tr>
@@ -1011,7 +1038,7 @@
         </tr>
     </table>
 
-    <h3 id="67">0x67 - Euler Roll Rotation</h3>
+    <h5 id="67">0x67 - Euler Roll Rotation</h5>
     Sets the Roll of this joint
     <table>
         <tr>
@@ -1058,7 +1085,7 @@
         </tr>
     </table>
 
-    <h3 id="68">0x68 - Euler Pitch Rotation</h3>
+    <h5 id="68">0x68 - Euler Pitch Rotation</h5>
     Sets the Pitch of this joint
     <table>
         <tr>
@@ -1105,7 +1132,7 @@
         </tr>
     </table>
 
-    <h3 id="69">0x69 - Euler Yaw Rotation</h3>
+    <h5 id="69">0x69 - Euler Yaw Rotation</h5>
     Sets the Yaw of this joint
     <table>
         <tr>
