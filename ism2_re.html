@@ -96,14 +96,16 @@
             <a href="#21">0x21 - Strings Index Table</a>
         </li>
         <li>
-            <a href="#2E">0x2E</a>
+            <a href="#2E">0x2E - Texture Definition</a>
         </li>
         <li>
             <a href="#61">0x61</a>
         </li>
-        <li>0x62</li>
         <li>
-            <a href="#03">0x03 - Joint Definition</a>
+            <a href="#62">0x62</a>
+        </li>
+        <li>
+            <a href="#03">0x03 - Joint Definitions</a>
         </li>
         <li>
             <a href="#32">0x32 - Joint Extra Information</a>
@@ -194,7 +196,7 @@
         </tr>
     </table>
 
-    <h2 id="2E">0x2E - Model Texture Names</h2>
+    <h2 id="2E">0x2E - Texture Definitions</h2>
     <table>
         <tr>
             <th>Offset</th>
@@ -245,7 +247,7 @@
         </tr>
     </table>
 
-    <h3 id="2D">0x2D - Model texture name</h3>
+    <h3 id="2D">0x2D - Texture name/file name</h3>
     <table>
         <tr>
             <th>Offset</th>
@@ -269,7 +271,7 @@
             <td>0x08</td>
             <td>4</td>
             <td>u32</td>
-            <td>Base name again</td>
+            <td>Base Name again</td>
         </tr>
         <tr>
             <td>0x0C</td>
@@ -328,12 +330,393 @@
                         <td>0x00</td>
                         <td>4</td>
                         <td>u32</td>
-                        <td>Offset to sub-section</td>
+                        <td>Offset to <a href="#0D">0x0D</a> sub-section</td>
                     </tr>
                 </table>
             </td>
         </tr>
     </table>
+
+    <h3 id="0D">0x0D</h3>
+    <table>
+        <tr>
+            <th>Offset</th>
+            <th>Length</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>0x00</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Magic number (0x0D)</td>
+        </tr>
+        <tr>
+            <td>0x04</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x1C</td>
+        </tr>
+        <tr>
+            <td>0x08</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x01</td>
+        </tr>
+        <tr>
+            <td>0x0C</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x09</td>
+        </tr>
+        <tr>
+            <td>0x10</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x09</td>
+        </tr>
+        <tr>
+            <td>0x14</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x02</td>
+        </tr>
+        <tr>
+            <td>0x18</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x00</td>
+        </tr>
+        <tr>
+            <td>0x1C</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Offset to <a href="#6C">0x6C</a> sub-section</td>
+        </tr>
+    </table>
+
+    <h4 id="6C">0x6C</h4>
+    <table>
+        <tr>
+            <th>Offset</th>
+            <th>Length</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>0x00</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Magic number (0x6C)</td>
+        </tr>
+        <tr>
+            <td>0x04</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x0C</td>
+        </tr>
+        <tr>
+            <td>0x08</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Amount of sub-sections</td>
+        </tr>
+        <tr>
+            <td>0x0C</td>
+            <td>Variable</td>
+            <td colspan=2>
+                Offsets to sub-sections
+                <br> Multiple entries
+                <br>
+                <table>
+                    <tr>
+                        <th>Offset</th>
+                        <th>Length</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>0x00</td>
+                        <td>4</td>
+                        <td>u32</td>
+                        <td>Offset to <a href="#6A">0x6A</a> sub-sections
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <h5 id="6A">0x6A</h5>
+    <table>
+        <tr>
+            <th>Offset</th>
+            <th>Length</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>0x00</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Magic number (0x6A)</td>
+        </tr>
+    </table>
+    Still need to RE this, here is data from Accessory 421:<br>
+    <code>
+        0x41C<br>
+        6A 00 00 00 14 00 00 00 01 00 00 00 0A 00 00 00<br>
+        00 00 00 00 34 04 00 00 6B 00 00 00 18 00 00 00<br>
+        02 00 00 00 06 00 00 00 02 00 00 00 00 00 00 00<br>
+        54 04 00 00 74 04 00 00 6B 00 00 00 18 00 00 00<br>
+        01 00 00 00 15 00 00 00 01 00 00 00 00 00 00 00<br>
+        70 04 00 00 04 00 00 00 6B 00 00 00 18 00 00 00<br>
+        01 00 00 00 18 00 00 00 01 00 00 00 00 00 00 00<br>
+        90 04 00 00 0B 00 00 00<br>
+        <br>
+        0x494<br>
+        6A 00 00 00 14 00 00 00 01 00 00 00 03 00 00 00<br>
+        00 00 00 00 AC 04 00 00 6B 00 00 00 18 00 00 00<br>
+        06 00 00 00 02 00 00 00 06 00 00 00 00 00 00 00<br>
+        DC 04 00 00 FC 04 00 00 1C 05 00 00 3C 05 00 00<br>
+        5C 05 00 00 7C 05 00 00 6B 00 00 00 18 00 00 00<br>
+        01 00 00 00 0E 00 00 00 01 00 00 00 1C 04 00 00<br>
+        F8 04 00 00 0A 00 00 00 6B 00 00 00 18 00 00 00<br>
+        01 00 00 00 0F 00 00 00 01 00 00 00 00 00 00 00<br>
+        18 05 00 00 03 00 00 00 6B 00 00 00 18 00 00 00<br>
+        01 00 00 00 10 00 00 00 01 00 00 00 00 00 00 00<br>
+        38 05 00 00 03 00 00 00 6B 00 00 00 18 00 00 00<br>
+        01 00 00 00 12 00 00 00 01 00 00 00 00 00 00 00<br>
+        58 05 00 00 01 00 00 00 6B 00 00 00 18 00 00 00<br>
+        01 00 00 00 13 00 00 00 01 00 00 00 00 00 00 00<br>
+        78 05 00 00 01 00 00 00 6B 00 00 00 18 00 00 00<br>
+        01 00 00 00 14 00 00 00 01 00 00 00 00 00 00 00<br>
+        98 05 00 00 01 00 00 00<br>
+        <br>
+        0x59C<br>
+        6A 00 00 00 14 00 00 00 01 00 00 00 0C 00 00 00<br>
+        00 00 00 00 B4 05 00 00 6B 00 00 00 18 00 00 00<br>
+        01 00 00 00 1C 00 00 00 01 00 00 00 00 00 00 00<br>
+        D0 05 00 00 06 00 00 00<br>
+        <br>
+        0x5D4<br>
+        6A 00 00 00 14 00 00 00 01 00 00 00 0D 00 00 00<br>
+        00 00 00 00 EC 05 00 00 6B 00 00 00 18 00 00 00<br>
+        01 00 00 00 34 00 00 00 01 00 00 00 00 00 00 00<br>
+        08 06 00 00 00 00 00 00 00 00 00 00<br>
+    </code>
+
+    <h2 id="62">0x62</h2>
+    <table>
+        <tr>
+            <th>Offset</th>
+            <th>Length</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>0x00</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Magic number (0x62)</td>
+        </tr>
+        <tr>
+            <td>0x04</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x0C</td>
+        </tr>
+        <tr>
+            <td>0x08</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Amount of sub-sections</td>
+        </tr>
+        <tr>
+            <td>0x0C</td>
+            <td>Variable</td>
+            <td colspan=2>
+                Offsets to sub-sections
+                <br> Multiple entries
+                <br>
+                <table>
+                    <tr>
+                        <th>Offset</th>
+                        <th>Length</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>0x00</td>
+                        <td>4</td>
+                        <td>u32</td>
+                        <td>Offset to <a href="#63">0x63</a> sub-sections
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <h3 id="63">0x63</h3>
+    <table>
+        <tr>
+            <th>Offset</th>
+            <th>Length</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>0x00</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Magic number (0x63)</td>
+        </tr>
+        <tr>
+            <td>0x04</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x2C</td>
+        </tr>
+        <tr>
+            <td>0x08</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x01</td>
+        </tr>
+        <tr>
+            <td>0x0C</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x02</td>
+        </tr>
+        <tr>
+            <td>0x10</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x01</td>
+        </tr>
+        <tr>
+            <td>0x14</td>
+            <td>4 * 4</td>
+            <td>u32 * 4</td>
+            <td>0x00</td>
+        </tr>
+        <tr>
+            <td>0x24</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x01</td>
+        </tr>
+        <tr>
+            <td>0x28</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x00</td>
+        </tr>
+        <tr>
+            <td>0x2C</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Offset to <a href="#65">0x65</a> section</td>
+        </tr>
+    </table>
+
+    <h4 id="65">0x65</h4>
+    <table>
+        <tr>
+            <th>Offset</th>
+            <th>Length</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>0x00</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Magic number (0x65)</td>
+        </tr>
+        <tr>
+            <td>0x04</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x10</td>
+        </tr>
+        <tr>
+            <td>0x08</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Amount of stuff in the buffer</td>
+        </tr>
+        <tr>
+            <td>0x0C</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x01</td>
+        </tr>
+        <tr>
+            <td>0x10</td>
+            <td>Variable</td>
+            <td colspan=2>
+                Offsets to each entry in the buffer
+                <br> Multiple entries
+                <br>
+                <table>
+                    <tr>
+                        <th>Offset</th>
+                        <th>Length</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>0x00</td>
+                        <td>4</td>
+                        <td>u32</td>
+                        <td>Offset to an entry</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    I still do not know what the entries mean, but here is the entire buffer in Accessory 421:<br>
+    <code>
+        0x684<br>
+        01 00 00 00 01 00 00 00 04 00 00 00 00 00 00 00<br>
+        00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 3F<br>
+        <br>
+        0x6A4<br>
+        02 00 00 00 01 00 00 00 04 00 00 00 00 00 00 00<br>
+        00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 3F<br>
+        <br>
+        0x6C4<br>
+        03 00 00 00 02 00 00 00 04 00 00 00 94 04 00 00<br>
+        03 00 00 00 08 00 00 00 94 04 00 00 00 00 00 00<br>
+        <br>
+        0x6E4<br>
+        04 00 00 00 01 00 00 00 04 00 00 00 00 00 00 00<br>
+        00 00 00 3F 00 00 00 3F 00 00 00 3F 00 00 80 3F<br>
+        <br>
+        0x704<br>
+        05 00 00 00 01 00 00 00 01 00 00 00 00 00 00 00<br>
+        9A 99 99 3E<br>
+        <br>
+        0x718<br>
+        06 00 00 00 01 00 00 00 04 00 00 00 00 00 00 00<br>
+        00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 3F<br>
+        <br>
+        0x738<br>
+        07 00 00 00 01 00 00 00 01 00 00 00 00 00 00 00<br>
+        00 00 00 3F<br>
+        <br>
+        0x74C<br>
+        08 00 00 00 01 00 00 00 01 00 00 00 00 00 00 00<br>
+        00 00 00 3F<br>
+        <br>
+        0x760<br>
+        09 00 00 00 01 00 00 00 01 00 00 00 00 00 00 00<br>
+        00 00 80 3F 00 00 00 00 00 00 00 00 00 00 00 00<br>
+    </code>
+
 
     <h2 id="03">0x03 - Joint Definition</h2>
     Describes Joints
@@ -403,7 +786,7 @@
         </tr>
     </table>
 
-    <h3 id="04">0x04</h3>
+    <h3 id="04">0x04 - Unit definition ?</h3>
     Seems to only appear once at the beginning
     <br>
     <table>
@@ -990,7 +1373,7 @@
                             <a href="#14">0x14</a>,
                             <a href="#67">0x67</a>,
                             <a href="#68">0x68</a>,
-                            <a href="#69">0x69</a>)</td>
+                            <a href="#69">0x69</a> )</td>
                     </tr>
                 </table>
             </td>
@@ -1357,8 +1740,8 @@
             <td>u32</td>
             <td>
                 Number of entries
-                <br> (note that, for some reason, the Inverse Bind Matrix buffer has this set to a number 16 times bigger than
-                the actual amount)
+                <br> (note that, for some reason, the Inverse Bind Matrix buffer has this set to a number 16 times bigger
+                than the actual amount)
             </td>
         </tr>
         <tr>
@@ -1933,7 +2316,8 @@
         </tr>
     </table>
 
-    <h4 id="45">0x45</h3>
+    <h4 id="45">0x45
+        </h3>
         <table>
             <tr>
                 <th>Offset</th>
