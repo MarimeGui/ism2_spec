@@ -1856,7 +1856,7 @@
             <td>0x0C</td>
             <td>4</td>
             <td>u32</td>
-            <td>0x0D | 0x1B | 0x1C ("model00Shape2")</td>
+            <td>Index to String ("model00Shape2", "accessoryShape")</td>
         </tr>
         <tr>
             <td>0x10</td>
@@ -1874,7 +1874,7 @@
             <td>0x18</td>
             <td>4</td>
             <td>u32</td>
-            <td>0x02</td>
+            <td>0x01 | 0x02</td>
         </tr>
         <tr>
             <td>0x1C</td>
@@ -1929,7 +1929,7 @@
             <td>0x00</td>
             <td>4</td>
             <td>u32</td>
-            <td>Magic Number</td>
+            <td>Magic Number (0x59)</td>
         </tr>
         <tr>
             <td>0x04</td>
@@ -2083,19 +2083,19 @@
             <td>0x0C</td>
             <td>2</td>
             <td>f16</td>
-            <td>]-1; 1[ (Normal X ?)</td>
+            <td>Normal X Coordinate</td>
         </tr>
         <tr>
             <td>0x0E</td>
             <td>2</td>
             <td>f16</td>
-            <td>]-1; 1[ (Tangent X ?)</td>
+            <td>Normal Y Coordinate</td>
         </tr>
         <tr>
             <td>0x10</td>
             <td>2</td>
             <td>f16</td>
-            <td>]-1; 1[ (Bi-normal X ?)</td>
+            <td>Normal Z Coordinate</td>
         </tr>
         <tr>
             <td>0x12</td>
@@ -2107,19 +2107,19 @@
             <td>0x14</td>
             <td>2</td>
             <td>f16</td>
-            <td>[-1; 1] (Normal Y ?)</td>
+            <td>Tangent X Coordinate</td>
         </tr>
         <tr>
             <td>0x16</td>
             <td>2</td>
             <td>f16</td>
-            <td>]-1; 1[ (Tangent Y ?)</td>
+            <td>Tangent Y Coordinate</td>
         </tr>
         <tr>
             <td>0x18</td>
             <td>2</td>
             <td>f16</td>
-            <td>[-1; 1] (Bi-normal Y ?)</td>
+            <td>Tangent Z Coordinate</td>
         </tr>
         <tr>
             <td>0x1A</td>
