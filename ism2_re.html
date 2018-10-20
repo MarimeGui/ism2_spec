@@ -1986,8 +1986,52 @@
                         <td>4</td>
                         <td>u32</td>
                         <td>Offset to sub-sections 0x00, 0x02, 0x0E,
-                            <a href="#03O">0x03</a> | 0x07, 0x01
-
+                            0x03 | 0x07, 0x01<br>Sub-sections referenced in 0x20 are attributes found in the buffer<br>
+                            This data looks like:<br>
+                            <table>
+                                <tr>
+                                    <th>Offset</th>
+                                    <th>Length</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                                <tr>
+                                    <td>0x00</td>
+                                    <td>4</td>
+                                    <td>u32</td>
+                                    <td>Magic Number (0x00, 0x02, 0x0E, 0x03...)</td>
+                                </tr>
+                                <tr>
+                                    <td>0x04</td>
+                                    <td>4</td>
+                                    <td>u32</td>
+                                    <td>0x04</td>
+                                </tr>
+                                <tr>
+                                    <td>0x08</td>
+                                    <td>4</td>
+                                    <td>u32</td>
+                                    <td>0x03</td>
+                                </tr>
+                                <tr>
+                                    <td>0x0C</td>
+                                    <td>4</td>
+                                    <td>u32</td>
+                                    <td>Always 0x20, probably how far to jump for next set of data (same as buffer stride)</td>
+                                </tr>
+                                <tr>
+                                    <td>0x10</td>
+                                    <td>4</td>
+                                    <td>u32</td>
+                                    <td>0x1C</td>
+                                </tr>
+                                <tr>
+                                    <td>0x14</td>
+                                    <td>4</td>
+                                    <td>u32</td>
+                                    <td>Offset to buffer</td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                 </table>
@@ -1995,64 +2039,7 @@
         </tr>
     </table>
 
-    <h4 id="03O">0x03 - Data</h4>
-    <table>
-        <tr>
-            <th>Offset</th>
-            <th>Length</th>
-            <th>Type</th>
-            <th>Description</th>
-        </tr>
-        <tr>
-            <td>0x00</td>
-            <td>4</td>
-            <td>u32</td>
-            <td>Magic Number (0x03)</td>
-        </tr>
-        <tr>
-            <td>0x04</td>
-            <td>4</td>
-            <td>u32</td>
-            <td>0x04</td>
-        </tr>
-        <tr>
-            <td>0x08</td>
-            <td>4</td>
-            <td>u32</td>
-            <td>0x03</td>
-        </tr>
-        <tr>
-            <td>0x0C</td>
-            <td>4</td>
-            <td>u32</td>
-            <td>0x20</td>
-        </tr>
-        <tr>
-            <td>0x10</td>
-            <td>4</td>
-            <td>u32</td>
-            <td>0x1C</td>
-        </tr>
-        <tr>
-            <td>0x14</td>
-            <td>4</td>
-            <td>u32</td>
-            <td>Offset to buffer</td>
-        </tr>
-        <tr>
-            <td colspan=4>Padding to align on 16 bytes</td>
-        </tr>
-        <tr>
-            <td>...</td>
-            <td>Variable</td>
-            <td colspan=2>
-                Buffer containing vertices data
-                <br>
-            </td>
-        </tr>
-    </table>
-
-    It seems like the following layout is always used in all model files (buffer stride of 0x20):
+    It seems like the following layout is always used in all model files (buffer stride of 0x20 bytes):
     <br>
     <table>
         <tr>
@@ -2107,19 +2094,19 @@
             <td>0x14</td>
             <td>2</td>
             <td>f16</td>
-            <td>Tangent X Coordinate</td>
+            <td>Tangent ? X Coordinate</td>
         </tr>
         <tr>
             <td>0x16</td>
             <td>2</td>
             <td>f16</td>
-            <td>Tangent Y Coordinate</td>
+            <td>Tangent ? Y Coordinate</td>
         </tr>
         <tr>
             <td>0x18</td>
             <td>2</td>
             <td>f16</td>
-            <td>Tangent Z Coordinate</td>
+            <td>Tangent ? Z Coordinate</td>
         </tr>
         <tr>
             <td>0x1A</td>
@@ -2141,9 +2128,7 @@
         </tr>
     </table>
 
-
-    <h4 id="07">0x07</h4>
-    Seen in the second buffers of characters
+    This seems to be the general pattern for the second buffer found in characters (stride of 0x20 bytes):
     <table>
         <tr>
             <th>Offset</th>
@@ -2153,39 +2138,56 @@
         </tr>
         <tr>
             <td>0x00</td>
-            <td>4</td>
-            <td>u32</td>
-            <td>Magic Number (0x07)</td>
+            <td>1</td>
+            <td>u8</td>
+            <td>First influencing Joint</td>
+        </tr>
+        <tr>
+            <td>0x01</td>
+            <td>1</td>
+            <td>u8</td>
+            <td>Second influencing Joint</td>
+        </tr>
+        <tr>
+            <td>0x02</td>
+            <td>1</td>
+            <td>u8</td>
+            <td>Third influencing Joint</td>
+        </tr>
+        <tr>
+            <td>0x03</td>
+            <td>1</td>
+            <td>u8</td>
+            <td>Fourth influencing Joint</td>
         </tr>
         <tr>
             <td>0x04</td>
             <td>4</td>
-            <td>u32</td>
-            <td>0x04</td>
+            <td>f32</td>
+            <td>Weight for First Joint</td>
         </tr>
         <tr>
             <td>0x08</td>
             <td>4</td>
-            <td>u32</td>
-            <td>0x03</td>
+            <td>f32</td>
+            <td>Weight for Second Joint</td>
         </tr>
         <tr>
             <td>0x0C</td>
             <td>4</td>
-            <td>u32</td>
-            <td>0x20</td>
+            <td>f32</td>
+            <td>Weight for Third Joint</td>
         </tr>
         <tr>
             <td>0x10</td>
             <td>4</td>
-            <td>u32</td>
-            <td>0x00</td>
+            <td>f32</td>
+            <td>Weight for Fourth Joint</td>
         </tr>
         <tr>
             <td>0x14</td>
-            <td>4</td>
-            <td>u32</td>
-            <td>Offset to buffer</td>
+            <td>12</td>
+            <td colspan="2">0x00 Padding</td>
         </tr>
     </table>
 
