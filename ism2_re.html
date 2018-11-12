@@ -1918,13 +1918,13 @@
             <td>0x14</td>
             <td>4</td>
             <td>u32</td>
-            <td>0x00</td>
+            <td>0x00 | 0x02 seen in 015</td>
         </tr>
         <tr>
             <td>0x18</td>
             <td>4</td>
             <td>u32</td>
-            <td>0x01 | 0x02</td>
+            <td>0x01 | 0x02 | 0x04 seen in 015</td>
         </tr>
         <tr>
             <td>0x1C</td>
@@ -1996,7 +1996,7 @@
             <td>0x0C</td>
             <td>4</td>
             <td>u32</td>
-            <td>0x01 | 0x03</td>
+            <td>0x01 | 0x03 | 0x02 seen in 015</td>
         </tr>
         <tr>
             <td>0x10</td>
@@ -2008,13 +2008,13 @@
             <td>0x14</td>
             <td>4</td>
             <td>u32</td>
-            <td>Buffer Stride ? (Always 0x20)</td>
+            <td>Buffer Stride ? (Always 0x20, 0x04 in 015)</td>
         </tr>
         <tr>
             <td>0x18</td>
             <td>4</td>
             <td>u32</td>
-            <td>0x00</td>
+            <td>0x00 | 0x01 and 0x02 seen in 015</td>
         </tr>
         <tr>
             <td>0x20</td>
@@ -2035,7 +2035,7 @@
                         <td>4</td>
                         <td>u32</td>
                         <td>Offset to sub-sections 0x00, 0x02, 0x0E,
-                            0x03 | 0x07, 0x01<br>Sub-sections referenced in 0x20 are attributes found in the buffer<br>
+                            0x03 | 0x07, 0x01 | 0x08<br>Sub-sections referenced in 0x20 are attributes found in the buffer<br>
                             This data looks like:<br>
                             <table>
                                 <tr>
@@ -2060,7 +2060,7 @@
                                     <td>0x08</td>
                                     <td>4</td>
                                     <td>u32</td>
-                                    <td>0x03</td>
+                                    <td>0x03 | 0x0C</td>
                                 </tr>
                                 <tr>
                                     <td>0x0C</td>
@@ -2073,7 +2073,7 @@
                                     <td>0x10</td>
                                     <td>4</td>
                                     <td>u32</td>
-                                    <td>0x1C</td>
+                                    <td>0x1C | 0x00 | 0x04</td>
                                 </tr>
                                 <tr>
                                     <td>0x14</td>
@@ -2240,6 +2240,7 @@
             <td colspan="2">0x00 Padding</td>
         </tr>
     </table>
+    In some files (like 015 in RB2), there are other buffers with 0x08 attributes. It seems like it can be defined twice. I still do not understand what their purpose are.
 
     <h3 id="46">0x46 - Faces</h3>
     Contains each points of the faces defining the shape of the model.
