@@ -1244,7 +1244,9 @@
             <td>4</td>
             <td>u32</td>
             <td>Joint ID that Vertices and the order IBMs come refers to (this number may not be equal to the index of
-                the Joint)</td>
+                the Joint).
+                <br>If this value is equal to 0xFFFFFFFF, then Vertices cannot reference it and you should use a 4x4
+                Identity Matrix as the Inverse Bind Matrix</td>
         </tr>
         <tr>
             <td>0x30</td>
@@ -2035,7 +2037,8 @@
                         <td>4</td>
                         <td>u32</td>
                         <td>Offset to sub-sections 0x00, 0x02, 0x0E,
-                            0x03 | 0x07, 0x01 | 0x08<br>Sub-sections referenced in 0x20 are attributes found in the buffer<br>
+                            0x03 | 0x07, 0x01 | 0x08<br>Sub-sections referenced in 0x20 are attributes found in the
+                            buffer<br>
                             This data looks like:<br>
                             <table>
                                 <tr>
@@ -2240,7 +2243,8 @@
             <td colspan="2">0x00 Padding</td>
         </tr>
     </table>
-    In some files (like 015 in RB2), there are other buffers with 0x08 attributes. It seems like it can be defined twice. I still do not understand what their purpose are.
+    In some files (like 015 in RB2), there are other buffers with 0x08 attributes. It seems like it can be defined
+    twice. I still do not understand what their purpose are.
 
     <h3 id="46">0x46 - Faces</h3>
     Contains each points of the faces defining the shape of the model.
