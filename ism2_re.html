@@ -461,50 +461,54 @@
             <td>u32</td>
             <td>Magic number (0x6A)</td>
         </tr>
+        <tr>
+            <td>0x04</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x14</td>
+        </tr>
+        <tr>
+            <td>0x08</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Number of sub-sections</td>
+        </tr>
+        <tr>
+            <td>0x0C</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>Varies</td>
+        </tr>
+        <tr>
+            <td>0x10</td>
+            <td>4</td>
+            <td>u32</td>
+            <td>0x00</td>
+        </tr>
+        <tr>
+            <td>0x14</td>
+            <td>Variable</td>
+            <td colspan="2">
+                Offsets to sub-sections
+                <br>Multiple Entries
+                <table>
+                    <tr>
+                        <th>Offset</th>
+                        <th>Length</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>0x00</td>
+                        <td>4</td>
+                        <td>u32</td>
+                        <td>Offset to <a href="#6B">0x6B</a> sub-sections
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
     </table>
-    Still need to RE this, here is data from Accessory 421:<br>
-    <code>
-        0x41C<br>
-        6A 00 00 00 14 00 00 00 01 00 00 00 0A 00 00 00<br>
-        00 00 00 00 34 04 00 00 6B 00 00 00 18 00 00 00<br>
-        02 00 00 00 06 00 00 00 02 00 00 00 00 00 00 00<br>
-        54 04 00 00 74 04 00 00 6B 00 00 00 18 00 00 00<br>
-        01 00 00 00 15 00 00 00 01 00 00 00 00 00 00 00<br>
-        70 04 00 00 04 00 00 00 6B 00 00 00 18 00 00 00<br>
-        01 00 00 00 18 00 00 00 01 00 00 00 00 00 00 00<br>
-        90 04 00 00 0B 00 00 00<br>
-        <br>
-        0x494<br>
-        6A 00 00 00 14 00 00 00 01 00 00 00 03 00 00 00<br>
-        00 00 00 00 AC 04 00 00 6B 00 00 00 18 00 00 00<br>
-        06 00 00 00 02 00 00 00 06 00 00 00 00 00 00 00<br>
-        DC 04 00 00 FC 04 00 00 1C 05 00 00 3C 05 00 00<br>
-        5C 05 00 00 7C 05 00 00 6B 00 00 00 18 00 00 00<br>
-        01 00 00 00 0E 00 00 00 01 00 00 00 1C 04 00 00<br>
-        F8 04 00 00 0A 00 00 00 6B 00 00 00 18 00 00 00<br>
-        01 00 00 00 0F 00 00 00 01 00 00 00 00 00 00 00<br>
-        18 05 00 00 03 00 00 00 6B 00 00 00 18 00 00 00<br>
-        01 00 00 00 10 00 00 00 01 00 00 00 00 00 00 00<br>
-        38 05 00 00 03 00 00 00 6B 00 00 00 18 00 00 00<br>
-        01 00 00 00 12 00 00 00 01 00 00 00 00 00 00 00<br>
-        58 05 00 00 01 00 00 00 6B 00 00 00 18 00 00 00<br>
-        01 00 00 00 13 00 00 00 01 00 00 00 00 00 00 00<br>
-        78 05 00 00 01 00 00 00 6B 00 00 00 18 00 00 00<br>
-        01 00 00 00 14 00 00 00 01 00 00 00 00 00 00 00<br>
-        98 05 00 00 01 00 00 00<br>
-        <br>
-        0x59C<br>
-        6A 00 00 00 14 00 00 00 01 00 00 00 0C 00 00 00<br>
-        00 00 00 00 B4 05 00 00 6B 00 00 00 18 00 00 00<br>
-        01 00 00 00 1C 00 00 00 01 00 00 00 00 00 00 00<br>
-        D0 05 00 00 06 00 00 00<br>
-        <br>
-        0x5D4<br>
-        6A 00 00 00 14 00 00 00 01 00 00 00 0D 00 00 00<br>
-        00 00 00 00 EC 05 00 00 6B 00 00 00 18 00 00 00<br>
-        01 00 00 00 34 00 00 00 01 00 00 00 00 00 00 00<br>
-        08 06 00 00 00 00 00 00 00 00 00 00<br>
-    </code>
 
     <h2 id="62">0x62</h2>
     <table>
@@ -2402,9 +2406,89 @@
             </tr>
         </table>
 
-        <h3 id="6E">0x6E - Checksums ?</h3>
-        These sub-sections appears after some other sub-sections and contain some unknown binary data...
+        <h3 id="6E">0x6E - Mesh Dimensions</h3>
+        Provides the minimum and maximum position values for the three axes for a particular mesh or the entire model.
         <br>
+        <table>
+            <tr>
+                <th>Offset</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>0x00</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Magic Number (0x6E)</td>
+            </tr>
+            <tr>
+                <td>0x04</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x30</td>
+            </tr>
+            <tr>
+                <td>0x08</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x0C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x10</td>
+                <td>4</td>
+                <td>f32</td>
+                <td>X Minimum</td>
+            </tr>
+            <tr>
+                <td>0x14</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Y Minimum</td>
+            </tr>
+            <tr>
+                <td>0x18</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Z Minimum</td>
+            </tr>
+            <tr>
+                <td>0x1C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+            <tr>
+                <td>0x20</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>X Maximum</td>
+            </tr>
+            <tr>
+                <td>0x24</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Y Maximum</td>
+            </tr>
+            <tr>
+                <td>0x28</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>Z Maximum</td>
+            </tr>
+            <tr>
+                <td>0x2C</td>
+                <td>4</td>
+                <td>u32</td>
+                <td>0x00</td>
+            </tr>
+        </table>
 </body>
 
 </html>
